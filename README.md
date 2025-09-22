@@ -1,4 +1,4 @@
-![WhatsApp Image 2025-09-22 at 11 00 17 PM](https://github.com/user-attachments/assets/bd320ae0-8e4e-4afc-ab90-e654a1ea173a)# Kubernetes-3-tier-app
+# Kubernetes-3-tier-app
 🚀 3-Tier Application Deployment on Kubernetes
 
 This project demonstrates the deployment of a 3-tier application (Frontend + Backend + Database) on Kubernetes using ConfigMaps, Secrets, Persistent Volumes, and Ingress.
@@ -46,6 +46,19 @@ For successful routing, connection tracking is required to maintain state of ses
 ####Ingress Controller installed (e.g., NGINX Ingress Controller)
 Using kubectl:kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.14.0/deploy/static/provider/cloud/deploy.yaml
 for minikube local cluster :minikube addons enable ingress.
+
+
+####OUTPUT####
+
+Errors I got :
+![WhatsApp Image 2025-09-22 at 11 00 17 PM](https://github.com/user-attachments/assets/612f0407-5d0a-4e95-8cf2-d5297fe42079)
+
+![WhatsApp Image 2025-09-22 at 11 00 17 PM (1)](https://github.com/user-attachments/assets/a63aa916-3ba5-46c9-9316-cceeb5dda98f)
+
+Final output:
+![WhatsApp Image 2025-09-22 at 11 00 17 PM (2)](https://github.com/user-attachments/assets/25a4db93-c1ef-489d-a7be-0fd626f97634)
+
+
 
 
 
