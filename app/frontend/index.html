@@ -17,43 +17,54 @@
             <p>Loading data from backend...</p>
         </div>
         <div id="dns-test">
-            <h3>DNS Resolution Test:</h3>
-            <p id="dns-status">Testing DNS...</p>
+            <h3>Connection Test:</h3>
+            <p id="dns-status">Testing connection...</p>
         </div>
     </div>
 
     <script>
-        // Test DNS resolution by fetching from backend service
-        async function testDNS() {
+        async function testBackend() {
             try {
-                const response = await fetch('http://backend-service.demo-app.svc.cluster.local:8080/api/data');
-                const data = await response.json();
+                const response = await fetch('/api/data');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 
-                document.getElementById('data').innerHTML = 
-                    `<div class="status ${data.db_status === 'Connected' ? 'healthy' : 'unhealthy'}">
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error(`Expected JSON but got: ${contentType}`);
+                }
+                
+                const data = await response.json();
+
+                document.getElementById('data').innerHTML =
+                    `<div class="status healthy">
                         <h3>Application Status</h3>
                         <p><strong>Message:</strong> ${data.message}</p>
                         <p><strong>Database Status:</strong> ${data.db_status}</p>
                         <p><strong>Config Value:</strong> ${data.config_value}</p>
                         <p><strong>Timestamp:</strong> ${data.timestamp}</p>
+                        <p><strong>Hostname:</strong> ${data.hostname}</p>
                     </div>`;
-                
-                document.getElementById('dns-status').innerHTML = 
-                    `<span class="healthy">✓ DNS resolution successful! Service discovered via: backend-service.demo-app.svc.cluster.local</span>`;
-                    
+
+                document.getElementById('dns-status').innerHTML =
+                    `<span class="healthy">✓ Backend API connected successfully via Ingress!</span>`;
+
             } catch (error) {
-                document.getElementById('data').innerHTML = 
+                document.getElementById('data').innerHTML =
                     `<div class="status unhealthy">
                         <h3>Error</h3>
                         <p>Failed to connect to backend: ${error.message}</p>
+                        <p>Try accessing: <a href="/api/data" target="_blank">/api/data</a></p>
                     </div>`;
-                document.getElementById('dns-status').innerHTML = 
-                    `<span class="unhealthy">✗ DNS resolution failed: ${error.message}</span>`;
+                document.getElementById('dns-status').innerHTML =
+                    `<span class="unhealthy">✗ Connection failed: ${error.message}</span>`;
             }
         }
 
-        testDNS();
-        setInterval(testDNS, 5000); // Refresh every 5 seconds
+        testBackend();
+        setInterval(testBackend, 5000);
     </script>
 </body>
 </html>
